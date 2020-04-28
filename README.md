@@ -8,14 +8,17 @@ Code generator for [mutable_copy](https://pub.dev/packages/mutable_copy/)
 ```dart
 import 'package:mutable_copy/mutable_copy.dart';
 
+
+part 'employe.g.dart';
+
 @imutable
 @MutableCopy
-class Employee {
+class Employe {
   final String fullName;
   final String department;
   final String team;
 
-  Employee({
+  Employe({
     this.fullName,
     this.department,
     this.team,
@@ -23,16 +26,27 @@ class Employee {
 }
 ```
 
-# Generate code 
+# Add dependencies
 ```
-pub run build_runner build
+dependencies:
+  ...
+  mutable_copy: ^0.2.5
+
+dev_dependencies:
+  ...
+  mutable_copy_generator: ^0.2.5
+  build_runner: ^1.9.0
 ```
 
+# Generate code
+```
+flutter pub run build_runner build
+```
 
 # Udage 
 
 ```dart
-final e1 = Employee(
+final e1 = Employe(
   fullName: 'Max Hatson',
   department: 'Mobile',
   team: 'Flutter',
