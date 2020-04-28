@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      mutable_copy_generator|mutableCopyBuilder:
+        enabled: true
+
+builders:
+  mutableCopyBuilder:
+    target: ":mutable_copy_generator"
+    import: "package:mutable_copy_generator/builder.dart"
+    builder_factories: ["mutableCopyBuilder"]
+    build_extensions: {".dart": ["mutable_copy.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
