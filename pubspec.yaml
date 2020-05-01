@@ -1,12 +1,12 @@
 name: mutable_copy_generator
-description: Mutable copy generator.
-version: 0.2.5
+description: Mutable copy generator simplify copy of immutable object. Unlike CopyWith allow to set null value
+version: 0.2.6
 repository: https://github.com/AlexVegner/mutable_copy_generator
 issue_tracker: https://github.com/AlexVegner/mutable_copy_generator/issues
 homepage: https://github.com/AlexVegner/mutable_copy_generator
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   analyzer: ">=0.39.0 <1.0.0"

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sample_object.dart';
+part of 'example.dart';
 
 // **************************************************************************
 // MutableCopyGenerator
@@ -20,8 +20,8 @@ extension SimpleObjectMutableCopyExt on SimpleObject {
 }
 
 class SimpleObjectMutable with Mutable<SimpleObject> {
-  final String id;
-  final int value;
+  String id;
+  int value;
 
   SimpleObjectMutable({
     this.id,

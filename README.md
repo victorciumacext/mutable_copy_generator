@@ -34,7 +34,7 @@ dependencies:
 
 dev_dependencies:
   ...
-  mutable_copy_generator: ^0.2.5
+  mutable_copy_generator: ^0.26
   build_runner: ^1.9.0
 ```
 

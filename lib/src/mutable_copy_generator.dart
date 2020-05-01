@@ -27,7 +27,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
   ) {
     final fields = sortedFields.fold(
       "",
-      (r, v) => "$r final ${v.type} ${v.name};",
+      (r, v) => "$r${v.type} ${v.name};",
     );
 
     final constructorFields = sortedFields.fold(

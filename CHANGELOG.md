@@ -1,3 +1,8 @@
+## 0.2.6
+
+* Critical fix
+
+
 ## 0.2.5
 
 * Update Readme
