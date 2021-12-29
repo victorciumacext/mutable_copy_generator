@@ -4,17 +4,16 @@ version: 0.2.6
 repository: https://github.com/AlexVegner/mutable_copy_generator
 issue_tracker: https://github.com/AlexVegner/mutable_copy_generator/issues
 homepage: https://github.com/AlexVegner/mutable_copy_generator
+publish_to: 'none'
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  analyzer: ">=0.39.0 <1.0.0"
-  build: ^1.2.2
-  path: ^1.6.4
-  mutable_copy: ^0.2.4
-  source_gen: ^0.9.5
+  build: ^2.2.1
+  path: ^1.8.1
+  source_gen: ^1.2.1
 
-dev_dependencies: 
-  build_config: ^0.4.2
-  build_runner: ^1.9.0
+dev_dependencies:
+  build_config: ^1.0.0
+  build_runner: ^2.1.7
