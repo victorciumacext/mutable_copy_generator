@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:mutable_copy/mutable_copy.dart';
+import 'package:mutable_copy_generator/mutable_copy.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// A `Generator` for `package:build_runner`
@@ -12,7 +12,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
     BuildStep buildStep,
   ) {
     if (element is! ClassElement) throw "$element is not a ClassElement";
-    final classElement = element as ClassElement;
+    final classElement = element;
     final sortedFields = _sortedConstructorFields(classElement);
     return '''
      ${_mutableExtensionPart(classElement, sortedFields)}
@@ -114,5 +114,5 @@ class _FieldInfo {
 
   _FieldInfo(ParameterElement element)
       : this.name = element.name,
-        this.type = element.type.getDisplayString();
+        this.type = element.type.getDisplayString(withNullability: true);
 }
