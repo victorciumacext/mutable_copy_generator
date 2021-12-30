@@ -11,14 +11,13 @@ import 'package:mutable_copy/mutable_copy.dart';
 
 part 'employe.g.dart';
 
-@imutable
 @MutableCopy
-class Employe {
+class Employee {
   final String fullName;
   final String department;
   final String team;
 
-  Employe({
+  Employee({
     this.fullName,
     this.department,
     this.team,
@@ -26,27 +25,15 @@ class Employe {
 }
 ```
 
-# Add dependencies
-```
-dependencies:
-  ...
-  mutable_copy: ^0.2.5
-
-dev_dependencies:
-  ...
-  mutable_copy_generator: ^0.26
-  build_runner: ^1.9.0
-```
-
 # Generate code
 ```
 flutter pub run build_runner build
 ```
 
-# Udage 
+# Usage 
 
 ```dart
-final e1 = Employe(
+final e1 = Employee(
   fullName: 'Max Hatson',
   department: 'Mobile',
   team: 'Flutter',
