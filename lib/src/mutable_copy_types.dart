@@ -10,7 +10,7 @@ mixin CopyWithMutable<T, M extends Mutable<T>> {
   M mutableCopy();
 
   /// copy object with mutation
-  T copy(UpdateWith<M> updateWith) {
+  T copyWith(UpdateWith<M> updateWith) {
     return updateWith(mutableCopy()).copy();
   }
 }

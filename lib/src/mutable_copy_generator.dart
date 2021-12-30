@@ -75,7 +75,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
             );
           }
 
-          ${classElement.name} copy(UpdateWith<${classElement.name}Mutable> updateWith) {
+          ${classElement.name} copyWith(UpdateWith<${classElement.name}Mutable> updateWith) {
             return updateWith(mutableCopy()).copy();
           }
         }
@@ -83,15 +83,13 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
   }
 
   List<_FieldInfo> _sortedConstructorFields(ClassElement element) {
-    assert(element is ClassElement);
-
     final constructor = element.unnamedConstructor;
     if (constructor is! ConstructorElement) {
       throw "Default ${element.name} constructor is missing";
     }
 
     final parameters = constructor.parameters;
-    if (parameters is! List<ParameterElement> || parameters.isEmpty) {
+    if (parameters.isEmpty) {
       throw "Unnamed constructor for ${element.name} has no parameters";
     }
 
