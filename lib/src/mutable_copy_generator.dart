@@ -72,7 +72,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
           ${classElement.name} copy() {
           ${nullabilityCheck}
           
-            return ${classElement.name}(
+            return ${classElement.name}Copy(
               ${paramsInput}
             );
           }
@@ -99,21 +99,17 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
           (r, v) => "$r ${v.name}: ${v.name},",
     );
     //add unnamed constructor if none is defined
-    var unnamedConstructor = '';
-    if (classElement.unnamedConstructor == null) {
-      print('Adding unnamed constructor');
-      print('required fields :${notNullableParams.map((e) => e.name)}');
 
-      unnamedConstructor = '''
-      ${classElement.name}({
+      final copyConstructor = '''
+      ${classElement.name}Copy({
        ${notNullableInputs}
        ${nullableInputs}
       });
       ''';
-    }
+
     return '''
         extension ${classElement.name}MutableCopyExt on ${classElement.name} {
-          ${unnamedConstructor}
+          ${copyConstructor}
         
           ${classElement.name}Mutable mutableCopy() {
             return ${classElement.name}Mutable(
