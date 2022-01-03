@@ -13,7 +13,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
   ) {
     if (element is! ClassElement) throw "$element is not a ClassElement";
     final classElement = element;
-    final sortedFields = _sortedConstructorFields(classElement);
+    final sortedFields = _sortedFields(classElement);
     return '''
      ${_mutableExtensionPart(classElement, sortedFields)}
 
@@ -27,18 +27,38 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
   ) {
     final fields = sortedFields.fold(
       "",
-      (r, v) => "$r${v.type} ${v.name};",
+      (r, v) {
+        if (v.type.contains('?')) {
+          return "$r${v.type} ${v.name};";
+        } else {
+          return "$r${v.type}? ${v.name};";
+        }
+      },
     );
 
     final constructorFields = sortedFields.fold(
       "",
-      (r, v) => "$r this.${v.name},",
+      (r, v) {
+        return "$r this.${v.name},";
+      },
     );
 
     final paramsInput = sortedFields.fold(
       "",
-      (r, v) => "$r ${v.name}: ${v.name},",
+      (r, v) {
+        if (v.type.contains('?')) {
+          return "$r ${v.name}: ${v.name},";
+        } else {
+          return "$r ${v.name}: ${v.name}!,";
+        }
+      },
     );
+
+    final notNullableFields = sortedFields.where((element) => !element.type.contains('?'));
+
+    final nullabilityCheck = notNullableFields.fold("", (r, v) {
+      return "if (${v.name} == null) throw '${v.name} could not be null'; ";
+    });
 
     return '''
         class ${classElement.name}Mutable with Mutable<${classElement.name}> {
@@ -50,6 +70,8 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
 
           @override
           ${classElement.name} copy() {
+          ${nullabilityCheck}
+          
             return ${classElement.name}(
               ${paramsInput}
             );
@@ -82,27 +104,16 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
     ''';
   }
 
-  List<_FieldInfo> _sortedConstructorFields(ClassElement element) {
-    final constructor = element.unnamedConstructor;
-    if (constructor is! ConstructorElement) {
-      throw "Default ${element.name} constructor is missing";
+  List<_FieldInfo> _sortedFields(ClassElement element) {
+    final fields = element.fields;
+
+    if (fields.isEmpty) {
+      throw "${element.name} has no parameters";
     }
-
-    final parameters = constructor.parameters;
-    if (parameters.isEmpty) {
-      throw "Unnamed constructor for ${element.name} has no parameters";
-    }
-
-    parameters.forEach((parameter) {
-      if (!parameter.isNamed) {
-        throw "Unnamed constructor for ${element.name} contains unnamed parameter. Only named parameters are supported.";
-      }
-    });
-
-    final fields = parameters.map((v) => _FieldInfo(v, v.isOptional)).toList();
+    final mappedFields = fields.map((v) => _FieldInfo(v)).toList();
     fields.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
 
-    return fields;
+    return mappedFields;
   }
 }
 
@@ -110,7 +121,7 @@ class _FieldInfo {
   final String name;
   final String type;
 
-  _FieldInfo(ParameterElement element, bool isNullable)
+  _FieldInfo(FieldElement element)
       : this.name = element.name,
-        this.type = element.type.getDisplayString(withNullability: isNullable);
+        this.type = element.type.getDisplayString(withNullability: true);
 }
