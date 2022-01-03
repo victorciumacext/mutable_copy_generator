@@ -89,8 +89,28 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
       (r, v) => "$r ${v.name}: ${v.name},",
     );
 
+    final notNullableParams = sortedFields.where((element) => !element.type.contains('?'));
+    final nullableParams = sortedFields.where((element) => element.type.contains('?'));
+
+    final notNullableInputs = notNullableParams.fold('', (r, v) => "$r required ${v.name}: ${v.name},");
+    final nullableInputs = nullableParams.fold(
+      "",
+          (r, v) => "$r ${v.name}: ${v.name},",
+    );
+    //add unnamed constructor if none is defined
+    var unnamedConstructor = '';
+    if (classElement.unnamedConstructor == null) {
+      unnamedConstructor = '''
+      ${classElement.name}({
+       ${notNullableInputs}
+       ${nullableInputs}
+      });
+      ''';
+    }
     return '''
         extension ${classElement.name}MutableCopyExt on ${classElement.name} {
+          ${unnamedConstructor}
+        
           ${classElement.name}Mutable mutableCopy() {
             return ${classElement.name}Mutable(
               ${paramsInput}
@@ -106,7 +126,6 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
 
   List<_FieldInfo> _sortedFields(ClassElement element) {
     final fields = element.fields;
-
     if (fields.isEmpty) {
       throw "${element.name} has no parameters";
     }
