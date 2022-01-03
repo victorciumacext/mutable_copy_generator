@@ -99,7 +99,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
       }
     });
 
-    final fields = parameters.map((v) => _FieldInfo(v)).toList();
+    final fields = parameters.map((v) => _FieldInfo(v, v.isOptional)).toList();
     fields.sort((lhs, rhs) => lhs.name.compareTo(rhs.name));
 
     return fields;
@@ -110,7 +110,7 @@ class _FieldInfo {
   final String name;
   final String type;
 
-  _FieldInfo(ParameterElement element)
+  _FieldInfo(ParameterElement element, bool isNullable)
       : this.name = element.name,
-        this.type = element.type.getDisplayString(withNullability: true);
+        this.type = element.type.getDisplayString(withNullability: isNullable);
 }
