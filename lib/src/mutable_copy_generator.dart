@@ -90,6 +90,7 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
     );
 
     final notNullableParams = sortedFields.where((element) => !element.type.contains('?'));
+
     final nullableParams = sortedFields.where((element) => element.type.contains('?'));
 
     final notNullableInputs = notNullableParams.fold('', (r, v) => "$r required ${v.name}: ${v.name},");
@@ -100,6 +101,9 @@ class MutableCopyGenerator extends GeneratorForAnnotation<MutableCopy> {
     //add unnamed constructor if none is defined
     var unnamedConstructor = '';
     if (classElement.unnamedConstructor == null) {
+      print('Adding unnamed constructor');
+      print('required fields :${notNullableParams.map((e) => e.name)}');
+
       unnamedConstructor = '''
       ${classElement.name}({
        ${notNullableInputs}
